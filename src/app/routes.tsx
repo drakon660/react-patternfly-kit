@@ -3,6 +3,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
 import { Support } from '@app/Support/Support';
+import { Login } from '@app/features/auth/Login';
 import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
 import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
 import { NotFound } from '@app/NotFound/NotFound';
@@ -36,7 +37,7 @@ const routes: AppRouteConfig[] = [
     label: 'Dashboard',
     path: '/',
     title: 'PatternFly Seed | Main Dashboard',
-  },
+  },  
   {
     component: Support,
     exact: true,
@@ -44,7 +45,7 @@ const routes: AppRouteConfig[] = [
     label: 'Support',
     path: '/support',
     title: 'PatternFly Seed | Support Page',
-  },
+  }, 
   {
     label: 'Settings',
     routes: [
@@ -98,13 +99,14 @@ const PageNotFound = ({ title }: { title: string }) => {
 };
 
 const flattenedRoutes: IAppRoute[] = routes.reduce(
-  (flattened, route) => [...flattened, ...(route.routes ? route.routes : [route])],
+  (flattened, route) => [...flattened, ...(route.routes ? route.routes : [route])],  
   [] as IAppRoute[]
 );
 
 const AppRoutes = (): React.ReactElement => (
   <LastLocationProvider>
-    <Switch>
+    
+    
       {flattenedRoutes.map(({ path, exact, component, title, isAsync }, idx) => (
         <RouteWithTitleUpdates
           path={path}
@@ -116,7 +118,7 @@ const AppRoutes = (): React.ReactElement => (
         />
       ))}
       <PageNotFound title="404 Page Not Found" />
-    </Switch>
+    
   </LastLocationProvider>
 );
 
