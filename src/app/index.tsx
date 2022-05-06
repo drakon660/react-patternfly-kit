@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '@patternfly/react-core/dist/styles/base.css';
-import { BrowserRouter as Router, Link, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Redirect, Route, Switch, useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { AppLayout } from '@app/AppLayout/AppLayout';
 import { AppRoutes } from '@app/routes';
 import '@app/app.css';
@@ -41,26 +41,40 @@ const App: React.FunctionComponent = () => (
         <Route path="/login">
           <Login />
         </Route>
-        <PrivateRoute exact path="/">        
-          <Home/>           
-        </PrivateRoute>
+        <RequireAuth>        
+        {/* <RequireAuth> */}
+           <AppLayout>
+              <AppRoutes />
+           </AppLayout>           
+        {/* </RequireAuth> */}
+        </RequireAuth>
         <Route component={Login} />
       </Switch>
     </Router>
   </Provider>
 );
 
-const NotFound = () => (
-  <div>
-    <h1>404 - Not Found!</h1>
-    <Link to="/">Go Home</Link>
-  </div>
-);
+function RequireAuth({ children }: { children: JSX.Element }) {
+  let auth = useAuth();
+  let location = useLocation();
 
-function Users() {
-  return <h1>Users</h1>;
+  if (!auth.user) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    //return <Navigate to="/login" state={{ from: location }} replace />;    
+    return <Redirect
+    to={{
+      pathname: '/login',
+      state: { from: location },
+    }}
+  />
+  }
 
+  return children;
 }
+
 function Home() {  
   const { user } = useAuth();
   const dispatch = useAppDispatch();
@@ -77,6 +91,7 @@ function Home() {
 
   return <><h1>Dashboard</h1> <button onClick={logout}>logout</button> </>;
 }
+
 
 export default App;
 

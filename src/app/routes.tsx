@@ -104,9 +104,8 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
 );
 
 const AppRoutes = (): React.ReactElement => (
-  <LastLocationProvider>
-    
-    
+ 
+  <>
       {flattenedRoutes.map(({ path, exact, component, title, isAsync }, idx) => (
         <RouteWithTitleUpdates
           path={path}
@@ -117,9 +116,10 @@ const AppRoutes = (): React.ReactElement => (
           isAsync={isAsync}
         />
       ))}
-      <PageNotFound title="404 Page Not Found" />
+      </>   
+   
     
-  </LastLocationProvider>
+ 
 );
 
 export { AppRoutes, routes };

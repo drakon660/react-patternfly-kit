@@ -1,10 +1,19 @@
 import * as React from 'react';
-import { PageSection, Title } from '@patternfly/react-core';
+import { Button, PageSection, Title } from '@patternfly/react-core';
+import { useAppDispatch } from '@app/hooks/store';
+import { logoutUser } from '@app/features/auth/authSlice';
 
-const Dashboard: React.FunctionComponent = () => (
-  <PageSection>
+const Dashboard = () => {
+  const dispatch = useAppDispatch();
+  
+  const logout = () => {
+    dispatch(logoutUser());  
+  }
+
+  return (<PageSection>
     <Title headingLevel="h1" size="lg">Dashboard Page Title!</Title>
-  </PageSection>
-)
+    <Button onClick={logout}>Logout</Button>
+  </PageSection>);
+}
 
 export { Dashboard };
