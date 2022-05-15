@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, PageSection, Title } from '@patternfly/react-core';
-import { useAppDispatch } from '@app/hooks/store';
 import { logoutUser } from '@app/features/auth/authSlice';
+import { useAppDispatch } from '@app/store';
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();

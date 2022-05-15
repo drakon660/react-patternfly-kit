@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { PrivateRoute } from './utils/PrivateRoute';
 import { useAuth } from './hooks/useAuth';
-import { useAppDispatch } from './hooks/store';
 import { logoutUser } from './features/auth/authSlice';
 //import { Login } from './features/auth/Login';
 
@@ -41,12 +40,10 @@ const App: React.FunctionComponent = () => (
         <Route path="/login">
           <Login />
         </Route>
-        <RequireAuth>        
-        {/* <RequireAuth> */}
+        <RequireAuth>                
            <AppLayout>
               <AppRoutes />
-           </AppLayout>           
-        {/* </RequireAuth> */}
+           </AppLayout>                   
         </RequireAuth>
         <Route component={Login} />
       </Switch>
@@ -73,23 +70,6 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   }
 
   return children;
-}
-
-function Home() {  
-  const { user } = useAuth();
-  const dispatch = useAppDispatch();
-  const history = useHistory();
-
-  const logout = () => {
-    dispatch(logoutUser());  
-  }
-
-  React.useEffect(()=>{
-    if(user)
-      history.push("/");
-  },[]);
-
-  return <><h1>Dashboard</h1> <button onClick={logout}>logout</button> </>;
 }
 
 
