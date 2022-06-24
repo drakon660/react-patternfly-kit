@@ -8,9 +8,12 @@ import {
   Page,
   PageHeader,
   PageSidebar,
-  SkipToContent
+  SkipToContent,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbHeading
 } from '@patternfly/react-core';
-import { routes, IAppRoute, IAppRouteGroup } from '@app/routes';
+import { routes, IAppRoute, IAppRouteGroup, AppRouteConfig } from '@app/routes';
 import logo from '@app/bgimages/Patternfly-Logo.svg';
 
 interface IAppLayout {
@@ -42,15 +45,17 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   }
 
   const Header = (
+    
     <PageHeader
       logo={<LogoImg />}
       showNavToggle
       isNavOpen={isNavOpen}
       onNavToggle={isMobileView ? onNavToggleMobile : onNavToggle}
-    />
+    />    
   );
 
   const location = useLocation();
+
 
   const renderNavItem = (route: IAppRoute, index: number) => (
     <NavItem key={`${route.label}-${index}`} id={`${route.label}-${index}`} isActive={route.path === location.pathname}>
@@ -60,16 +65,20 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     </NavItem>
   );
 
-  const renderNavGroup = (group: IAppRouteGroup, groupIndex: number) => (
-    <NavExpandable
+  const renderNavGroup = (group: IAppRouteGroup, groupIndex: number) => {
+
+    const isActiveOrExpanded = group.routes.some((route) => route.path === location.pathname);
+
+    return (<NavExpandable
       key={`${group.label}-${groupIndex}`}
       id={`${group.label}-${groupIndex}`}
       title={group.label}
-      isActive={group.routes.some((route) => route.path === location.pathname)}
+      isActive={isActiveOrExpanded}
+      isExpanded={isActiveOrExpanded}
     >
       {group.routes.map((route, idx) => route.label && renderNavItem(route, idx))}
-    </NavExpandable>
-  );
+    </NavExpandable>)
+  }
 
   const Navigation = (
     <Nav id="nav-primary-simple" theme="dark">
@@ -99,8 +108,24 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       Skip to Content
     </SkipToContent>
   );
+
+  console.log(routes);
+
+ const items = [1,2,4,5];
+
+  const BreadCrumb = () => (
+    <Breadcrumb>
+    {
+      routes.filter((route) => route.path && route.path == location.pathname).map((route,idx)=>        
+        <BreadcrumbItem key={idx} to="#">{route.label}</BreadcrumbItem>
+      )
+    }        
+    </Breadcrumb> 
+  )
+
   return (
-    <Page
+    <Page        
+      breadcrumb={<BreadCrumb/>}
       mainContainerId={pageId}
       header={Header}
       sidebar={Sidebar}

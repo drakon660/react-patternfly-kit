@@ -6,3 +6,6 @@ export function accessibleRouteChangeHandler() {
     }
   }, 50);
 }
+
+
+export const nameof = <T>(name: Extract<keyof T, string>): string => name;

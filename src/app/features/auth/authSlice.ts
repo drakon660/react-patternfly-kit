@@ -11,7 +11,7 @@ interface UserLogin {
 export const authUser = createAsyncThunk(
   "users/auth",
   async (userData:UserLogin, { rejectWithValue }) => {        
-    if(userData.UserName === 'drakon' || userData.Password == '123456')    
+    if(userData.UserName === 'drakon' && userData.Password == '123456')    
       return true;
     else
      return rejectWithValue(false);

@@ -1,5 +1,5 @@
-import { useAuth, useUserNamePassword } from "@app/hooks/useAuth";
-import { Alert, LoginForm, LoginPage, PageSection } from "@patternfly/react-core";
+import { useUserNamePassword } from "@app/hooks/useAuth";
+import { Alert, LoginForm, LoginPage } from "@patternfly/react-core";
 import { ExclamationCircleIcon } from "@patternfly/react-icons";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -43,7 +43,6 @@ const LoginFormExtended = (props: LoginProps) => (
 );
 
 const Login = () => {
-  const { user } = useAuth();
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -64,14 +63,13 @@ const Login = () => {
   function isEmpty(value: string, fn: React.Dispatch<React.SetStateAction<boolean>>): boolean {
     let isValid = value.length > 0;
     fn(isValid);
-
     return isValid;
   }
 
   const loginButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event?.preventDefault();
 
-    let isValid = isEmpty(name, setIsValidUsername) && isEmpty(password, setIsValidPassword)
+    let isValid = isEmpty(name, setIsValidUsername) && isEmpty(password, setIsValidPassword);
 
     if (isValid) {
       dispatch(authUser({ UserName: name, Password: password })).then(() => {
@@ -79,6 +77,7 @@ const Login = () => {
       });
     }
   }
+
   return (
     <>
       <LoginPage
@@ -89,12 +88,11 @@ const Login = () => {
         backgroundImgAlt="Images"
         textContent="This is placeholder text only. Use this area to place any information or introductory message about your application that may be relevant to users."
         loginTitle="Log in to vindu"
-        loginSubtitle="Enter your single sign-on LDAP credentials."
-      >
+        loginSubtitle="Enter your single sign-on LDAP credentials.">
         {userNamePasswordValid === false && <Alert variant="danger" title="Wrong user or password" timeout={3000} />}
-
-        <LoginFormExtended isValidPassword={isValidPassword} isValidUsername={isValidUsername} usernameValue={name} handleUsernameChange={userNameChange} handleLoginButtonClick={loginButtonClick} onChangePassword={changePassword} passwordValue={password} />
-
+        <LoginFormExtended isValidPassword={isValidPassword} isValidUsername={isValidUsername} usernameValue={name} 
+                           handleUsernameChange={userNameChange} handleLoginButtonClick={loginButtonClick} 
+                           onChangePassword={changePassword} passwordValue={password} />
       </LoginPage>
     </>
   );

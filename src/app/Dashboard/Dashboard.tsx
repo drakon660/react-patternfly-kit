@@ -10,7 +10,7 @@ const Dashboard = () => {
     dispatch(logoutUser());  
   }
 
-  return (<PageSection>
+  return (<PageSection >     
     <Title headingLevel="h1" size="lg">Dashboard Page Title!</Title>
     <Button onClick={logout}>Logout</Button>
   </PageSection>);

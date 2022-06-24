@@ -9,6 +9,7 @@ import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
 import { NotFound } from '@app/NotFound/NotFound';
 import { useDocumentTitle } from '@app/utils/useDocumentTitle';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
+import { ApplicationPools } from './Settings/IIS/ApplicationPools';
 
 let routeFocusTimer: number;
 export interface IAppRoute {
@@ -26,6 +27,7 @@ export interface IAppRoute {
 export interface IAppRouteGroup {
   label: string;
   routes: IAppRoute[];
+  path: string;
 }
 
 export type AppRouteConfig = IAppRoute | IAppRouteGroup;
@@ -54,6 +56,13 @@ const routes: AppRouteConfig[] = [
         exact: true,
         label: 'General',
         path: '/settings/general',
+        title: 'PatternFly Seed | General Settings',
+      },
+      {
+        component: ApplicationPools,
+        exact: true,
+        label: 'ApplicationPools',
+        path: '/settings/applicationpools',
         title: 'PatternFly Seed | General Settings',
       },
       {
