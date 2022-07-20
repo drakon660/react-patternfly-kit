@@ -7,4 +7,5 @@ export interface ApplicationPool
     managedPipeLineMode:string;
     identity:string;
     applications:number;        
+    isStarted:boolean;
 }

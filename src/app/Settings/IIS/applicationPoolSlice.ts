@@ -16,6 +16,10 @@ export function getApplicationPoolsApi() {
   return axios.get('ApplicationPools').then(responseBody);
 }
 
+export function getApplicationPoolApi(name:string) {
+  return axios.get(`ApplicationPools\\${name}`).then(responseBody);
+}
+
 export const getApplicationPools = createAsyncThunk(
   "applicationPools/getAll",
   async (_, { rejectWithValue }) => {        
@@ -32,9 +36,31 @@ export const getApplicationPools = createAsyncThunk(
   }
 );
 
-interface GetApplicationPoolResponse
+export const getApplicationPool = createAsyncThunk(
+  "applicationPools/get",
+  async (name:string, { rejectWithValue }) => {        
+    try
+    {       
+      const applicationPool = await getApplicationPoolApi(name);    
+      return applicationPool;
+    }
+    catch(err)
+    {
+      //console.log(err);        
+      return rejectWithValue(err);        
+    }
+  }
+);
+
+
+interface GetApplicationPoolsResponse
 {  
   applicationPools:ApplicationPool[];
+}
+
+interface GetApplicationPoolResponse
+{  
+  applicationPool:ApplicationPool;
 }
 
 const usersAdapter = createEntityAdapter<ApplicationPool>({  
@@ -53,8 +79,11 @@ const slice = createSlice({
   initialState: initialState,
   reducers: {}, 
   extraReducers: (builder) => {
-    builder.addCase(getApplicationPools.fulfilled,(state,action:PayloadAction<GetApplicationPoolResponse,string>)=>{                  
+    builder.addCase(getApplicationPools.fulfilled,(state,action:PayloadAction<GetApplicationPoolsResponse,string>)=>{                  
       usersAdapter.setAll(state, action.payload.applicationPools.map(pool=>({...pool, key:pool.name})))
+    })  
+    builder.addCase(getApplicationPool.fulfilled,(state,action:PayloadAction<GetApplicationPoolResponse,string>)=>{                  
+      usersAdapter.setOne(state, action.payload.applicationPool);
     })    
   },
 })
